@@ -8,38 +8,58 @@ package com.casitaprojects.parkpluss;
  *
  * @author gezer
  */
+
+import javax.swing.*;
+import java.awt.*;
+
+
+
 public class Parqueo extends javax.swing.JFrame {
     
     panelingresarVehiculo panelingresarvehiculo;
     panelRetirarVehiculo panelRetirarvehiculo;
     panelBuscarVehiculo panelBuscarvehiculo;
     
+    JPanel panelContenido;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Parqueo.class.getName());
 
     
     public Parqueo() {
         initComponents();
-        setSize(800,450);
+        getContentPane().setLayout(new BorderLayout());
+        add(jpPrincipal, BorderLayout.WEST);
+        
+         panelContenido = new JPanel(new CardLayout());
+         panelContenido.setPreferredSize(new java.awt.Dimension(895, 495));
+         panelContenido.setMinimumSize(new Dimension(895, 495));
+         panelContenido.setMaximumSize(new Dimension(895, 495));
+        add(panelContenido, BorderLayout.CENTER);
+        
         panelingresarvehiculo = new panelingresarVehiculo();
-        panelingresarvehiculo.setBounds(300,0,473,400);
-        add(panelingresarvehiculo);
-        
         panelRetirarvehiculo = new panelRetirarVehiculo();
-        panelRetirarvehiculo.setBounds(300,0,473,400);
-        add(panelRetirarvehiculo);
-        panelRetirarvehiculo.setVisible(false);
-        
         panelBuscarvehiculo = new panelBuscarVehiculo();
-        panelBuscarvehiculo.setBounds(350,0,1116,400);
-        add(panelBuscarvehiculo);
-        panelBuscarvehiculo.setVisible(false);
+
+        panelContenido.add(panelingresarvehiculo, "INGRESAR");
+        panelContenido.add(panelRetirarvehiculo, "RETIRAR");
+        panelContenido.add(panelBuscarvehiculo, "BUSCAR");
         
+        mostrarPanel("INGRESAR");
         
-        
-        
+        setSize(1000, 600);
+        setLocationRelativeTo(null);
+        setTitle("ParkPluss - Sistema de Parqueo");
         
     }
+    
+    private void mostrarPanel(String nombrePanel) {
+        CardLayout cl = (CardLayout) panelContenido.getLayout();
+        cl.show(panelContenido, nombrePanel);
+        
+    }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -148,46 +168,26 @@ public class Parqueo extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 350, Short.MAX_VALUE))
+                .addGap(0, 709, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        setSize(800,450);
-        panelBuscarvehiculo.setVisible(false);
-        panelRetirarvehiculo.setVisible(false);
-        panelingresarvehiculo.setVisible(true);
-        
-        revalidate();
-        repaint();
+         mostrarPanel("INGRESAR");
     }//GEN-LAST:event_button1ActionPerformed
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
-        setSize(800,450);
-        panelBuscarvehiculo.setVisible(false);       
-        panelingresarvehiculo.setVisible(false);
-        panelRetirarvehiculo.setVisible(true);
-        
-        revalidate();
-        repaint();
+        mostrarPanel("RETIRAR");
     }//GEN-LAST:event_button2ActionPerformed
 
     private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
-        setSize(1116,450);
-        panelRetirarvehiculo.setVisible(false);
-        panelingresarvehiculo.setVisible(false);
-        panelBuscarvehiculo.setVisible(true);
-        
-        revalidate();
-        repaint();
+        mostrarPanel("BUSCAR");
     }//GEN-LAST:event_button3ActionPerformed
 
     private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
