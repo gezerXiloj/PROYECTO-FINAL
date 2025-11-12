@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.casitaprojects.parkpluss;
+package main.java.com.casitaprojects.parkpluss;
 
 import java.awt.Dimension;
+import main.java.com.casitaprojects.parkpluss.TipoArea;
+import main.java.com.casitaprojects.parkpluss.TipoVehiculo;
 
 /**
  *
@@ -29,14 +31,22 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtPlaca = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rdbMoto = new javax.swing.JRadioButton();
+        rdbAuto = new javax.swing.JRadioButton();
+        chboxEstudiante = new javax.swing.JCheckBox();
+        chboxCatedrático = new javax.swing.JCheckBox();
+        rdbFlat = new javax.swing.JRadioButton();
+        rdbVariable = new javax.swing.JRadioButton();
+        btnIngresar = new javax.swing.JButton();
 
         jLabel1.setText("INGRESO DE VEHICULOS AL PARQUEO");
 
@@ -46,12 +56,38 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
 
         jLabel4.setText("TIPO DE VEHICULO");
 
-        jRadioButton1.setText("Motocicleta");
+        buttonGroup3.add(rdbMoto);
+        rdbMoto.setText("Motocicleta");
 
-        jRadioButton2.setText("Automovil");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup3.add(rdbAuto);
+        rdbAuto.setText("Automovil");
+        rdbAuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
+                rdbAutoActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(chboxEstudiante);
+        chboxEstudiante.setText("ESTUDIANTE");
+
+        buttonGroup1.add(chboxCatedrático);
+        chboxCatedrático.setText("CATEDRATICO");
+        chboxCatedrático.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chboxCatedráticoActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(rdbFlat);
+        rdbFlat.setText("FLAT");
+
+        buttonGroup2.add(rdbVariable);
+        rdbVariable.setText("VARIABLE");
+
+        btnIngresar.setText("INGRESAR");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarActionPerformed(evt);
             }
         });
 
@@ -63,14 +99,21 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(65, 65, 65)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jRadioButton1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jRadioButton2))
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(rdbFlat)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(rdbVariable))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(chboxEstudiante)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(chboxCatedrático))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(rdbMoto)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(rdbAuto))
+                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(155, 155, 155)
                         .addComponent(jLabel2))
@@ -78,10 +121,13 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
                         .addGap(115, 115, 115)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
-                        .addComponent(jLabel4)))
+                        .addGap(120, 120, 120)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(70, 78, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -92,34 +138,97 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
                 .addComponent(jLabel4)
-                .addGap(9, 9, 9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addContainerGap(76, Short.MAX_VALUE))
+                    .addComponent(rdbMoto)
+                    .addComponent(rdbAuto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chboxEstudiante)
+                    .addComponent(chboxCatedrático))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdbVariable)
+                    .addComponent(rdbFlat))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+    private void rdbAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbAutoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+    }//GEN-LAST:event_rdbAutoActionPerformed
+
+    private void chboxCatedráticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chboxCatedráticoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chboxCatedráticoActionPerformed
+
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+          String placa = txtPlaca.getText().trim();
+
+    TipoVehiculo tipoVehiculo = null;
+    if (rdbMoto.isSelected()) {
+        tipoVehiculo = TipoVehiculo.MOTO;
+    } else if (rdbAuto.isSelected()) {
+        tipoVehiculo = TipoVehiculo.AUTO;
+    }
+
+  
+    TipoArea tipoArea = null;
+    if (chboxEstudiante.isSelected()) {
+        tipoArea = TipoArea.ESTUDIANTES;
+    } else if (chboxCatedrático.isSelected()) {
+        tipoArea = TipoArea.CATEDRATICOS;
+    }
+
+    // Validaciones básicas
+    if (placa.isEmpty() || tipoVehiculo == null || tipoArea == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "⚠️ Debes llenar todos los campos.");
+        return;
+    }
+
+    // Crear objeto y guardar en CSV
+    Vehiculo nuevoVehiculo = new Vehiculo(placa, tipoVehiculo, tipoArea);
+    nuevoVehiculo.guardarEnCSV();
+
+    javax.swing.JOptionPane.showMessageDialog(this, 
+        "✅ Vehículo guardado correctamente en el archivo CSV.");
+    
+    // Limpiar campos y selecciones
+    txtPlaca.setText("");
+    txtNombre.setText("");
+    buttonGroup1.clearSelection(); // Estudiante / Catedrático
+    buttonGroup2.clearSelection(); // (Flat / Variable, aún no se usa)
+    buttonGroup3.clearSelection(); // Moto / Auto
+
+    }//GEN-LAST:event_btnIngresarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIngresar;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.JCheckBox chboxCatedrático;
+    private javax.swing.JCheckBox chboxEstudiante;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JRadioButton rdbAuto;
+    private javax.swing.JRadioButton rdbFlat;
+    private javax.swing.JRadioButton rdbMoto;
+    private javax.swing.JRadioButton rdbVariable;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPlaca;
     // End of variables declaration//GEN-END:variables
 }

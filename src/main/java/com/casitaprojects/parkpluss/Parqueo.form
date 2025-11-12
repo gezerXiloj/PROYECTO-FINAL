@@ -52,13 +52,13 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="button1" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
-                              <Component id="button3" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
+                              <Component id="btnIngresarVehiculo" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
+                              <Component id="btnBuscarVehiculo" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="button4" min="-2" pref="109" max="-2" attributes="0"/>
-                              <Component id="button2" min="-2" pref="109" max="-2" attributes="0"/>
+                              <Component id="btnSalir" min="-2" pref="109" max="-2" attributes="0"/>
+                              <Component id="btnRetirarVehiculo" min="-2" pref="109" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -83,13 +83,13 @@
                   <Component id="jLabel2" min="-2" pref="94" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="button1" min="-2" pref="60" max="-2" attributes="0"/>
-                      <Component id="button2" min="-2" pref="60" max="-2" attributes="0"/>
+                      <Component id="btnIngresarVehiculo" min="-2" pref="60" max="-2" attributes="0"/>
+                      <Component id="btnRetirarVehiculo" min="-2" pref="60" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="button3" max="32767" attributes="0"/>
-                      <Component id="button4" pref="57" max="32767" attributes="0"/>
+                      <Component id="btnBuscarVehiculo" max="32767" attributes="0"/>
+                      <Component id="btnSalir" pref="57" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="307" max="-2" attributes="0"/>
               </Group>
@@ -111,7 +111,7 @@
             <Property name="text" type="java.lang.String" value="jLabel2"/>
           </Properties>
         </Component>
-        <Component class="java.awt.Button" name="button1">
+        <Component class="java.awt.Button" name="btnIngresarVehiculo">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Bookman Old Style" size="11" style="1"/>
@@ -119,10 +119,10 @@
             <Property name="label" type="java.lang.String" value="Ingresar Vehiculo"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIngresarVehiculoActionPerformed"/>
           </Events>
         </Component>
-        <Component class="java.awt.Button" name="button2">
+        <Component class="java.awt.Button" name="btnRetirarVehiculo">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Bookman Old Style" size="11" style="1"/>
@@ -130,10 +130,10 @@
             <Property name="label" type="java.lang.String" value="Retirar Vehiculo"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRetirarVehiculoActionPerformed"/>
           </Events>
         </Component>
-        <Component class="java.awt.Button" name="button3">
+        <Component class="java.awt.Button" name="btnBuscarVehiculo">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Bookman Old Style" size="11" style="1"/>
@@ -141,10 +141,10 @@
             <Property name="label" type="java.lang.String" value="Buscar Vehiculo"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button3ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarVehiculoActionPerformed"/>
           </Events>
         </Component>
-        <Component class="java.awt.Button" name="button4">
+        <Component class="java.awt.Button" name="btnSalir">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Bookman Old Style" size="11" style="1"/>
@@ -152,7 +152,7 @@
             <Property name="label" type="java.lang.String" value="SALIR"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button4ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSalirActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.casitaprojects.parkpluss;
+package main.java.com.casitaprojects.parkpluss;
 
 /**
  *
@@ -39,12 +39,17 @@ public class Parqueo extends javax.swing.JFrame {
         panelingresarvehiculo = new panelingresarVehiculo();
         panelRetirarvehiculo = new panelRetirarVehiculo();
         panelBuscarvehiculo = new panelBuscarVehiculo();
+        
+        JPanel panelVacio = new JPanel();
+        panelVacio.setBackground(Color.WHITE); 
+        panelContenido.add(panelVacio, "BLANCO");
 
         panelContenido.add(panelingresarvehiculo, "INGRESAR");
         panelContenido.add(panelRetirarvehiculo, "RETIRAR");
         panelContenido.add(panelBuscarvehiculo, "BUSCAR");
         
-        mostrarPanel("INGRESAR");
+        CardLayout cl = (CardLayout) panelContenido.getLayout();
+        cl.show(panelContenido, "BLANCO");
         
         setSize(1000, 600);
         setLocationRelativeTo(null);
@@ -73,10 +78,10 @@ public class Parqueo extends javax.swing.JFrame {
         jpPrincipal = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        button1 = new java.awt.Button();
-        button2 = new java.awt.Button();
-        button3 = new java.awt.Button();
-        button4 = new java.awt.Button();
+        btnIngresarVehiculo = new java.awt.Button();
+        btnRetirarVehiculo = new java.awt.Button();
+        btnBuscarVehiculo = new java.awt.Button();
+        btnSalir = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,35 +94,35 @@ public class Parqueo extends javax.swing.JFrame {
 
         jLabel2.setText("jLabel2");
 
-        button1.setFont(new java.awt.Font("Bookman Old Style", 1, 11)); // NOI18N
-        button1.setLabel("Ingresar Vehiculo");
-        button1.addActionListener(new java.awt.event.ActionListener() {
+        btnIngresarVehiculo.setFont(new java.awt.Font("Bookman Old Style", 1, 11)); // NOI18N
+        btnIngresarVehiculo.setLabel("Ingresar Vehiculo");
+        btnIngresarVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
+                btnIngresarVehiculoActionPerformed(evt);
             }
         });
 
-        button2.setFont(new java.awt.Font("Bookman Old Style", 1, 11)); // NOI18N
-        button2.setLabel("Retirar Vehiculo");
-        button2.addActionListener(new java.awt.event.ActionListener() {
+        btnRetirarVehiculo.setFont(new java.awt.Font("Bookman Old Style", 1, 11)); // NOI18N
+        btnRetirarVehiculo.setLabel("Retirar Vehiculo");
+        btnRetirarVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button2ActionPerformed(evt);
+                btnRetirarVehiculoActionPerformed(evt);
             }
         });
 
-        button3.setFont(new java.awt.Font("Bookman Old Style", 1, 11)); // NOI18N
-        button3.setLabel("Buscar Vehiculo");
-        button3.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarVehiculo.setFont(new java.awt.Font("Bookman Old Style", 1, 11)); // NOI18N
+        btnBuscarVehiculo.setLabel("Buscar Vehiculo");
+        btnBuscarVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button3ActionPerformed(evt);
+                btnBuscarVehiculoActionPerformed(evt);
             }
         });
 
-        button4.setFont(new java.awt.Font("Bookman Old Style", 1, 11)); // NOI18N
-        button4.setLabel("SALIR");
-        button4.addActionListener(new java.awt.event.ActionListener() {
+        btnSalir.setFont(new java.awt.Font("Bookman Old Style", 1, 11)); // NOI18N
+        btnSalir.setLabel("SALIR");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button4ActionPerformed(evt);
+                btnSalirActionPerformed(evt);
             }
         });
 
@@ -130,12 +135,12 @@ public class Parqueo extends javax.swing.JFrame {
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnIngresarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28)
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRetirarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addGap(97, 97, 97)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -153,12 +158,12 @@ public class Parqueo extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnIngresarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRetirarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(button3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button4, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
+                    .addComponent(btnBuscarVehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
                 .addGap(307, 307, 307))
         );
 
@@ -178,21 +183,21 @@ public class Parqueo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+    private void btnIngresarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarVehiculoActionPerformed
          mostrarPanel("INGRESAR");
-    }//GEN-LAST:event_button1ActionPerformed
+    }//GEN-LAST:event_btnIngresarVehiculoActionPerformed
 
-    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+    private void btnRetirarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarVehiculoActionPerformed
         mostrarPanel("RETIRAR");
-    }//GEN-LAST:event_button2ActionPerformed
+    }//GEN-LAST:event_btnRetirarVehiculoActionPerformed
 
-    private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
+    private void btnBuscarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVehiculoActionPerformed
         mostrarPanel("BUSCAR");
-    }//GEN-LAST:event_button3ActionPerformed
+    }//GEN-LAST:event_btnBuscarVehiculoActionPerformed
 
-    private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_button4ActionPerformed
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,10 +225,10 @@ public class Parqueo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button button1;
-    private java.awt.Button button2;
-    private java.awt.Button button3;
-    private java.awt.Button button4;
+    private java.awt.Button btnBuscarVehiculo;
+    private java.awt.Button btnIngresarVehiculo;
+    private java.awt.Button btnRetirarVehiculo;
+    private java.awt.Button btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jpPrincipal;

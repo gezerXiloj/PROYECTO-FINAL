@@ -1,17 +1,14 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package main.java.com.casitaprojects.parkpluss;
 
 /**
  *
  * @author gezer
  */
-public class ParkPluss {
-
-    public static void main(String[] args) {
-        Parqueo verPark=new Parqueo();
-        verPark.setVisible(true);
-    }
+public enum TipoVehiculo {
+    AUTO,
+    MOTO
 }
