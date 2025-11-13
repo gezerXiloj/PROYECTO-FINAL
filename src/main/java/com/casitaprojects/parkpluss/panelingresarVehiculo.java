@@ -5,9 +5,10 @@
 package main.java.com.casitaprojects.parkpluss;
 
 import java.awt.Dimension;
+import java.io.IOException;
 import main.java.com.casitaprojects.parkpluss.TipoArea;
 import main.java.com.casitaprojects.parkpluss.TipoVehiculo;
-
+import main.java.com.casitaprojects.parkpluss.RegistroEntrada;
 /**
  *
  * @author gezer
@@ -172,8 +173,9 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
     }//GEN-LAST:event_chboxCatedráticoActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-          String placa = txtPlaca.getText().trim();
+    String placa = txtPlaca.getText().trim();
 
+    // 🔹 Tipo de vehículo
     TipoVehiculo tipoVehiculo = null;
     if (rdbMoto.isSelected()) {
         tipoVehiculo = TipoVehiculo.MOTO;
@@ -181,7 +183,7 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
         tipoVehiculo = TipoVehiculo.AUTO;
     }
 
-  
+    // 🔹 Tipo de área
     TipoArea tipoArea = null;
     if (chboxEstudiante.isSelected()) {
         tipoArea = TipoArea.ESTUDIANTES;
@@ -189,26 +191,70 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
         tipoArea = TipoArea.CATEDRATICOS;
     }
 
-    // Validaciones básicas
+    // 🚫 Validaciones
     if (placa.isEmpty() || tipoVehiculo == null || tipoArea == null) {
         javax.swing.JOptionPane.showMessageDialog(this, 
             "⚠️ Debes llenar todos los campos.");
         return;
     }
 
-    // Crear objeto y guardar en CSV
+    // 🔹 Selección del modo de cobro
+    String[] opciones = {"FLAT (Q10.00)", "VARIABLE (Q5/hora)"};
+    int seleccion = javax.swing.JOptionPane.showOptionDialog(
+            this,
+            "Selecciona el modo de cobro:",
+            "Modo de Tarifa",
+            javax.swing.JOptionPane.DEFAULT_OPTION,
+            javax.swing.JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[0]
+    );
+
+    ModoTarifa modoSeleccionado;
+    if (seleccion == 1) {
+        modoSeleccionado = ModoTarifa.VARIABLE;
+    } else if (seleccion == 0) {
+        modoSeleccionado = ModoTarifa.FLAT;
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Operación cancelada.");
+        return;
+    }
+
+    // 🟢 Crear objeto Vehículo y guardarlo
     Vehiculo nuevoVehiculo = new Vehiculo(placa, tipoVehiculo, tipoArea);
     nuevoVehiculo.guardarEnCSV();
 
+    // 🟢 Registrar el ingreso (ahora enviamos el modoTarifa)
+    RegistroEntrada.registrarVehiculo(nuevoVehiculo, modoSeleccionado);
+
+    // 🔹 Actualizar capacidad del área correspondiente
+    try {
+        String areaId = "";
+        if (tipoVehiculo == TipoVehiculo.MOTO) {
+            areaId = "A01"; // Motos
+        } else if (tipoArea == TipoArea.ESTUDIANTES) {
+            areaId = "A02"; // Autos Estudiantes
+        } else if (tipoArea == TipoArea.CATEDRATICOS) {
+            areaId = "A03"; // Autos Catedráticos
+        }
+
+        GestorCSV.actualizarCapacidadArea(areaId, true); // true = ocupar
+    } catch (IOException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "❌ Error al actualizar la capacidad del área: " + e.getMessage());
+    }
+
+    // ✅ Mensaje final
     javax.swing.JOptionPane.showMessageDialog(this, 
-        "✅ Vehículo guardado correctamente en el archivo CSV.");
-    
-    // Limpiar campos y selecciones
+        "✅ Vehículo ingresado correctamente.\nPlaca: " + placa);
+
+    // 🧹 Limpiar campos
     txtPlaca.setText("");
     txtNombre.setText("");
-    buttonGroup1.clearSelection(); // Estudiante / Catedrático
-    buttonGroup2.clearSelection(); // (Flat / Variable, aún no se usa)
-    buttonGroup3.clearSelection(); // Moto / Auto
+    buttonGroup1.clearSelection();
+    buttonGroup2.clearSelection();
+    buttonGroup3.clearSelection();
 
     }//GEN-LAST:event_btnIngresarActionPerformed
 

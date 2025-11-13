@@ -51,9 +51,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btnReingreso" max="32767" attributes="0"/>
                               <Component id="btnIngresarVehiculo" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
-                              <Component id="btnBuscarVehiculo" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
+                              <Component id="btnBuscarVehiculo" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -91,7 +92,9 @@
                       <Component id="btnBuscarVehiculo" max="32767" attributes="0"/>
                       <Component id="btnSalir" pref="57" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="307" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnReingreso" min="-2" pref="43" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="254" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -153,6 +156,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSalirActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnReingreso">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reingreso"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReingresoActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

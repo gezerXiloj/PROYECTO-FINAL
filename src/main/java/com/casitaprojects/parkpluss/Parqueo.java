@@ -11,6 +11,7 @@ package main.java.com.casitaprojects.parkpluss;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDateTime;
 
 
 
@@ -82,6 +83,7 @@ public class Parqueo extends javax.swing.JFrame {
         btnRetirarVehiculo = new java.awt.Button();
         btnBuscarVehiculo = new java.awt.Button();
         btnSalir = new java.awt.Button();
+        btnReingreso = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -126,6 +128,13 @@ public class Parqueo extends javax.swing.JFrame {
             }
         });
 
+        btnReingreso.setText("Reingreso");
+        btnReingreso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReingresoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
         jpPrincipalLayout.setHorizontalGroup(
@@ -134,9 +143,10 @@ public class Parqueo extends javax.swing.JFrame {
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addGap(36, 36, 36)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnReingreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnIngresarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnBuscarVehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(28, 28, 28)
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -164,7 +174,9 @@ public class Parqueo extends javax.swing.JFrame {
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnBuscarVehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
-                .addGap(307, 307, 307))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnReingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(254, 254, 254))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -199,6 +211,66 @@ public class Parqueo extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void btnReingresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReingresoActionPerformed
+String placa = JOptionPane.showInputDialog(this, "Ingrese la placa del vehículo:");
+
+    if (placa == null || placa.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "⚠️ Debes ingresar una placa.");
+        return;
+    }
+
+Ticket ultimo = RegistroEntrada.buscarTicketPorPlaca(placa.trim());
+if (ultimo == null) {
+    JOptionPane.showMessageDialog(this, "❌ No se encontró ningún registro anterior de esa placa.");
+    return;
+}
+
+if (ultimo.getModoTarifa() != ModoTarifa.FLAT) {
+    JOptionPane.showMessageDialog(this, "⚠️ Este vehículo no tiene modo FLAT.");
+    return;
+}
+
+if (ultimo.getFechaSalida() == null) {
+    JOptionPane.showMessageDialog(this, "⚠️ El vehículo aún está activo dentro del parqueo.");
+    return;
+}
+
+    // Verificamos que el ticket tenga modo FLAT
+    if (ultimo.getModoTarifa() == ModoTarifa.FLAT) {
+
+        // Si el ticket no tiene fecha de salida, significa que aún está activo
+        if (ultimo.getFechaSalida() == null) {
+            JOptionPane.showMessageDialog(this,
+                "🚗 El vehículo aún está dentro del parqueo.\nNo se puede registrar reingreso.");
+            return;
+        }
+
+        // Calculamos el tiempo desde la última salida
+        LocalDateTime salida = ultimo.getFechaSalida();
+        long minutos = java.time.Duration.between(salida, LocalDateTime.now()).toMinutes();
+
+        if (minutos <= 120) {
+            JOptionPane.showMessageDialog(this,
+                "✅ Reingreso válido: aún dentro del tiempo del ticket FLAT.\nNo se cobrará nuevamente.");
+
+            Vehiculo v = new Vehiculo(placa.trim(), TipoVehiculo.AUTO, TipoArea.ESTUDIANTES);
+            RegistroEntrada.registrarVehiculo(v, ModoTarifa.FLAT);
+            return;
+
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "⌛ Tiempo del ticket FLAT expirado. Se generará un nuevo cobro.");
+            Vehiculo v = new Vehiculo(placa.trim(), TipoVehiculo.AUTO, TipoArea.ESTUDIANTES);
+            RegistroEntrada.registrarVehiculo(v, ModoTarifa.FLAT);
+            return;
+        }
+    } else {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ Este vehículo no tiene tarifa FLAT registrada.");
+    }
+
+    }//GEN-LAST:event_btnReingresoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -227,6 +299,7 @@ public class Parqueo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button btnBuscarVehiculo;
     private java.awt.Button btnIngresarVehiculo;
+    private javax.swing.JButton btnReingreso;
     private java.awt.Button btnRetirarVehiculo;
     private java.awt.Button btnSalir;
     private javax.swing.JLabel jLabel1;

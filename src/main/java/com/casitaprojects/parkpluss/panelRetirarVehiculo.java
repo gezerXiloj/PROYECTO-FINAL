@@ -31,23 +31,31 @@ public class panelRetirarVehiculo extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtPlaca = new javax.swing.JTextField();
+        btnRetirar = new javax.swing.JButton();
+        btnRetirarF = new javax.swing.JButton();
 
         jLabel1.setText("SALIDA DE VEHICULOS DEL PARQUEO");
 
         jLabel2.setText("PLACA");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtPlaca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtPlacaActionPerformed(evt);
             }
         });
 
-        jButton1.setText("RETIRAR"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRetirar.setText("RETIRAR"); // NOI18N
+        btnRetirar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnRetirarActionPerformed(evt);
+            }
+        });
+
+        btnRetirarF.setText("RETIRAR FLAT");
+        btnRetirarF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetirarFActionPerformed(evt);
             }
         });
 
@@ -65,13 +73,11 @@ public class panelRetirarVehiculo extends javax.swing.JPanel {
                         .addComponent(jLabel2)))
                 .addContainerGap(63, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(113, 113, 113)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(92, 92, 92)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtPlaca, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(btnRetirar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRetirarF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -82,26 +88,95 @@ public class panelRetirarVehiculo extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(btnRetirar, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnRetirarF, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(49, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPlacaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtPlacaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarActionPerformed
+      String placa = txtPlaca.getText().trim();
+
+    if (placa.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "⚠️ Debes ingresar una placa para retirar.");
+        return;
+    }
+
+    // 🔹 Llamar al proceso de retiro (esto debe devolverte el ticket)
+    Ticket ticket = RegistroEntrada.retirarVehiculo(placa);
+
+    // 🔹 Validar si se encontró un ticket
+    if (ticket == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "❌ No se encontró un ticket activo para la placa: " + placa);
+        return;
+    }
+
+    // 🔹 Cerrar el ticket (registrar salida y monto)
+    ticket.cerrarTicket();
+
+    // 🔹 Mostrar mensaje con el monto total
+    javax.swing.JOptionPane.showMessageDialog(this, 
+        "✅ Vehículo retirado correctamente.\n" +
+        "Monto total a pagar: Q" + String.format("%.2f", ticket.getMonto()) +
+        "\n\nGenerando factura PDF...");
+
+    // 🔹 Generar directamente la factura PDF
+    ticket.generarTicketPDF();
+
+    // 🔹 Limpiar campo de placa
+    txtPlaca.setText("");
+
+    }//GEN-LAST:event_btnRetirarActionPerformed
+
+    private void btnRetirarFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarFActionPerformed
+        String placa = txtPlaca.getText().trim();
+
+    if (placa.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "⚠️ Debes ingresar una placa para retirar (modo FLAT).");
+        return;
+    }
+
+    Ticket ticket = RegistroEntrada.retirarVehiculo(placa);
+
+    if (ticket == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "❌ No se encontró un ticket activo para la placa: " + placa);
+        return;
+    }
+
+    // Cerrar ticket y aplicar reglas de FLAT
+    ticket.cerrarTicket();
+
+    if (ticket.getMonto() == 0) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "✅ Reingreso válido (aún dentro de las 2 horas). No se cobra nuevamente.");
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "⚠️ Tiempo excedido de 2 horas.\n" +
+            "Se aplicará una nueva tarifa de Q" + String.format("%.2f", ticket.getMonto()) +
+            "\n\nGenerando factura PDF...");
+        ticket.generarTicketPDF();
+    }
+
+    txtPlaca.setText("");
+    }//GEN-LAST:event_btnRetirarFActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnRetirar;
+    private javax.swing.JButton btnRetirarF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtPlaca;
     // End of variables declaration//GEN-END:variables
 }
