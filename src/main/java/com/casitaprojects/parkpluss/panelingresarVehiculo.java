@@ -6,9 +6,13 @@ package main.java.com.casitaprojects.parkpluss;
 
 import java.awt.Dimension;
 import java.io.IOException;
+import main.java.com.casitaprojects.parkpluss.GestorCSV;
+import main.java.com.casitaprojects.parkpluss.ModoTarifa;
 import main.java.com.casitaprojects.parkpluss.TipoArea;
 import main.java.com.casitaprojects.parkpluss.TipoVehiculo;
 import main.java.com.casitaprojects.parkpluss.RegistroEntrada;
+import main.java.com.casitaprojects.parkpluss.Ticket;
+import main.java.com.casitaprojects.parkpluss.Vehiculo;
 /**
  *
  * @author gezer
@@ -173,32 +177,25 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
     }//GEN-LAST:event_chboxCatedráticoActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-    String placa = txtPlaca.getText().trim();
+String placa = txtPlaca.getText().trim();
 
-    // 🔹 Tipo de vehículo
+    // Tipo de vehículo
     TipoVehiculo tipoVehiculo = null;
-    if (rdbMoto.isSelected()) {
-        tipoVehiculo = TipoVehiculo.MOTO;
-    } else if (rdbAuto.isSelected()) {
-        tipoVehiculo = TipoVehiculo.AUTO;
-    }
+    if (rdbMoto.isSelected()) tipoVehiculo = TipoVehiculo.MOTO;
+    else if (rdbAuto.isSelected()) tipoVehiculo = TipoVehiculo.AUTO;
 
-    // 🔹 Tipo de área
+    // Tipo de área
     TipoArea tipoArea = null;
-    if (chboxEstudiante.isSelected()) {
-        tipoArea = TipoArea.ESTUDIANTES;
-    } else if (chboxCatedrático.isSelected()) {
-        tipoArea = TipoArea.CATEDRATICOS;
-    }
+    if (chboxEstudiante.isSelected()) tipoArea = TipoArea.ESTUDIANTES;
+    else if (chboxCatedrático.isSelected()) tipoArea = TipoArea.CATEDRATICOS;
 
-    // 🚫 Validaciones
+    // Validaciones
     if (placa.isEmpty() || tipoVehiculo == null || tipoArea == null) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "⚠️ Debes llenar todos los campos.");
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Debes llenar todos los campos.");
         return;
     }
 
-    // 🔹 Selección del modo de cobro
+    // Modo de cobro
     String[] opciones = {"FLAT (Q10.00)", "VARIABLE (Q5/hora)"};
     int seleccion = javax.swing.JOptionPane.showOptionDialog(
             this,
@@ -212,32 +209,28 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
     );
 
     ModoTarifa modoSeleccionado;
-    if (seleccion == 1) {
-        modoSeleccionado = ModoTarifa.VARIABLE;
-    } else if (seleccion == 0) {
-        modoSeleccionado = ModoTarifa.FLAT;
-    } else {
+    if (seleccion == 1) modoSeleccionado = ModoTarifa.VARIABLE;
+    else if (seleccion == 0) modoSeleccionado = ModoTarifa.FLAT;
+    else {
         javax.swing.JOptionPane.showMessageDialog(this, "Operación cancelada.");
         return;
     }
 
-    // 🟢 Crear objeto Vehículo y guardarlo
+    // Crear y guardar vehículo
     Vehiculo nuevoVehiculo = new Vehiculo(placa, tipoVehiculo, tipoArea);
     nuevoVehiculo.guardarEnCSV();
 
-    // 🟢 Registrar el ingreso (ahora enviamos el modoTarifa)
-    RegistroEntrada.registrarVehiculo(nuevoVehiculo, modoSeleccionado);
+    // Registrar ingreso (ya guarda en histórico dentro del método)
+    Ticket ticket = RegistroEntrada.registrarVehiculo(nuevoVehiculo, modoSeleccionado);
 
-    // 🔹 Actualizar capacidad del área correspondiente
+    if (ticket == null) return; // si no se pudo registrar, salimos
+
+    // Actualizar capacidad del área
     try {
         String areaId = "";
-        if (tipoVehiculo == TipoVehiculo.MOTO) {
-            areaId = "A01"; // Motos
-        } else if (tipoArea == TipoArea.ESTUDIANTES) {
-            areaId = "A02"; // Autos Estudiantes
-        } else if (tipoArea == TipoArea.CATEDRATICOS) {
-            areaId = "A03"; // Autos Catedráticos
-        }
+        if (tipoVehiculo == TipoVehiculo.MOTO) areaId = "A01";
+        else if (tipoArea == TipoArea.ESTUDIANTES) areaId = "A02";
+        else if (tipoArea == TipoArea.CATEDRATICOS) areaId = "A03";
 
         GestorCSV.actualizarCapacidadArea(areaId, true); // true = ocupar
     } catch (IOException e) {
@@ -245,11 +238,10 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
             "❌ Error al actualizar la capacidad del área: " + e.getMessage());
     }
 
-    // ✅ Mensaje final
     javax.swing.JOptionPane.showMessageDialog(this, 
         "✅ Vehículo ingresado correctamente.\nPlaca: " + placa);
 
-    // 🧹 Limpiar campos
+    // Limpiar campos
     txtPlaca.setText("");
     txtNombre.setText("");
     buttonGroup1.clearSelection();

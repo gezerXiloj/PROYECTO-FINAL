@@ -102,7 +102,7 @@ public class panelRetirarVehiculo extends javax.swing.JPanel {
     }//GEN-LAST:event_txtPlacaActionPerformed
 
     private void btnRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarActionPerformed
-      String placa = txtPlaca.getText().trim();
+    String placa = txtPlaca.getText().trim();
 
     if (placa.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, 
@@ -123,52 +123,58 @@ public class panelRetirarVehiculo extends javax.swing.JPanel {
     // 🔹 Cerrar el ticket (registrar salida y monto)
     ticket.cerrarTicket();
 
+    // 🔹 Asegurar que si es FLAT tenga monto fijo Q10 después del cierre
+    if (ticket.getModoTarifa() == ModoTarifa.FLAT) {
+        ticket.setMonto(10.00);
+    }
+
+    // 🔹 Generar factura PDF con el monto correcto
+    ticket.generarTicketPDF();
+
     // 🔹 Mostrar mensaje con el monto total
     javax.swing.JOptionPane.showMessageDialog(this, 
         "✅ Vehículo retirado correctamente.\n" +
-        "Monto total a pagar: Q" + String.format("%.2f", ticket.getMonto()) +
-        "\n\nGenerando factura PDF...");
+        "Monto total a pagar: Q" + String.format("%.2f", ticket.getMonto()));
 
-    // 🔹 Generar directamente la factura PDF
-    ticket.generarTicketPDF();
-
-    // 🔹 Limpiar campo de placa
     txtPlaca.setText("");
 
     }//GEN-LAST:event_btnRetirarActionPerformed
 
     private void btnRetirarFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarFActionPerformed
-        String placa = txtPlaca.getText().trim();
+            String placa = txtPlaca.getText().trim();
 
     if (placa.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "⚠️ Debes ingresar una placa para retirar (modo FLAT).");
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Ingresa una placa.");
         return;
     }
 
     Ticket ticket = RegistroEntrada.retirarVehiculo(placa);
-
     if (ticket == null) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "❌ No se encontró un ticket activo para la placa: " + placa);
+        javax.swing.JOptionPane.showMessageDialog(this, "❌ No hay ticket activo para esa placa.");
         return;
     }
 
-    // Cerrar ticket y aplicar reglas de FLAT
-    ticket.cerrarTicket();
-
-    if (ticket.getMonto() == 0) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "✅ Reingreso válido (aún dentro de las 2 horas). No se cobra nuevamente.");
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "⚠️ Tiempo excedido de 2 horas.\n" +
-            "Se aplicará una nueva tarifa de Q" + String.format("%.2f", ticket.getMonto()) +
-            "\n\nGenerando factura PDF...");
-        ticket.generarTicketPDF();
+    // Validar que realmente sea FLAT
+    if (ticket.getModoTarifa() != ModoTarifa.FLAT) {
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Esta opción solo aplica a tickets FLAT.");
+        return;
     }
 
+    // Asignar cobro fijo
+    ticket.setMonto(10.00);
+    ticket.cerrarTicket();
+    ticket.generarTicketPDF();
+
+    // Registrar derecho a reingreso por 2 horas
+    RegistroEntrada.marcarReingresoTemporal(ticket, 2);
+
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "🚗 Vehículo FLAT retirado correctamente.\n" +
+        "Monto: Q10.00\n" +
+        "Tiene derecho a reingresar dentro de 2 horas sin nuevo cobro.");
+
     txtPlaca.setText("");
+
     }//GEN-LAST:event_btnRetirarFActionPerformed
 
 
