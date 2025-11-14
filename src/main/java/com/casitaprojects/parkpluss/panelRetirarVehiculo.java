@@ -130,7 +130,7 @@ public class panelRetirarVehiculo extends javax.swing.JPanel {
 
     // 🔹 Generar factura PDF con el monto correcto
     ticket.generarTicketPDF();
-
+    GestorDB.actualizarTicketSalida(ticket);
     // 🔹 Mostrar mensaje con el monto total
     javax.swing.JOptionPane.showMessageDialog(this, 
         "✅ Vehículo retirado correctamente.\n" +
@@ -167,6 +167,9 @@ public class panelRetirarVehiculo extends javax.swing.JPanel {
 
     // Registrar derecho a reingreso por 2 horas
     RegistroEntrada.marcarReingresoTemporal(ticket, 2);
+    
+    GestorDB.actualizarTicketSalida(ticket);
+    GestorDB.insertarReingreso(ticket, 2);
 
     javax.swing.JOptionPane.showMessageDialog(this,
         "🚗 Vehículo FLAT retirado correctamente.\n" +

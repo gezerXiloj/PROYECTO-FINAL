@@ -164,7 +164,7 @@ public class Parqueo extends javax.swing.JFrame {
                                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnRetirarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jpPrincipalLayout.createSequentialGroup()
-                                .addGap(56, 56, 56)
+                                .addGap(47, 47, 47)
                                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addGap(97, 97, 97)
@@ -194,7 +194,7 @@ public class Parqueo extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnReingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addGap(21, 21, 21)
                         .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(254, 254, 254))
         );
@@ -285,7 +285,10 @@ if (ultimo.getFechaSalida() == null) {
             JOptionPane.showMessageDialog(this,
                 "⌛ Tiempo del ticket FLAT expirado. Se generará un nuevo cobro.");
             Vehiculo v = new Vehiculo(placa.trim(), TipoVehiculo.AUTO, TipoArea.ESTUDIANTES);
-            RegistroEntrada.registrarVehiculo(v, ModoTarifa.FLAT);
+            Ticket nuevoTicket = RegistroEntrada.registrarVehiculo(v, ModoTarifa.FLAT);
+            if(nuevoTicket != null){
+                GestorDB.insertarTicket(nuevoTicket);
+            }
             return;
         }
     } else {
@@ -296,17 +299,8 @@ if (ultimo.getFechaSalida() == null) {
     }//GEN-LAST:event_btnReingresoActionPerformed
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-    try (Connection conn = ConexionDB.getConnection()) {
-        if (conn != null) {
-            System.out.println("✅ Conexión OK con parkplus_db");
-            JOptionPane.showMessageDialog(this, "Conexión a la base de datos exitosa ✅");
-        } else {
-            JOptionPane.showMessageDialog(this, "❌ No se pudo conectar a la base de datos");
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "⚠️ Error: " + e.getMessage());
-    }
+        CSVtoDatabaseImporter importer = new CSVtoDatabaseImporter();
+        importer.importarTodo();
     }//GEN-LAST:event_button1ActionPerformed
 
     /**

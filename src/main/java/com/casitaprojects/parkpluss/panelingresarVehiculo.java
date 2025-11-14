@@ -177,7 +177,7 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
     }//GEN-LAST:event_chboxCatedráticoActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-String placa = txtPlaca.getText().trim();
+    String placa = txtPlaca.getText().trim();
 
     // Tipo de vehículo
     TipoVehiculo tipoVehiculo = null;
@@ -222,8 +222,12 @@ String placa = txtPlaca.getText().trim();
 
     // Registrar ingreso (ya guarda en histórico dentro del método)
     Ticket ticket = RegistroEntrada.registrarVehiculo(nuevoVehiculo, modoSeleccionado);
+    
+    if(ticket !=null){
+        GestorDB.insertarTicket(ticket);
+    }
 
-    if (ticket == null) return; // si no se pudo registrar, salimos
+    if (ticket == null)return; // si no se pudo registrar, salimos
 
     // Actualizar capacidad del área
     try {
