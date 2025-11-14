@@ -13,6 +13,7 @@ import main.java.com.casitaprojects.parkpluss.TipoVehiculo;
 import main.java.com.casitaprojects.parkpluss.RegistroEntrada;
 import main.java.com.casitaprojects.parkpluss.Ticket;
 import main.java.com.casitaprojects.parkpluss.Vehiculo;
+import main.java.com.casitaprojects.parkpluss.GestorDB;
 /**
  *
  * @author gezer
@@ -58,6 +59,12 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
         jLabel2.setText("PLACA");
 
         jLabel3.setText("NOMBRE PROPIETARIO");
+
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("TIPO DE VEHICULO");
 
@@ -219,6 +226,7 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
     // Crear y guardar vehículo
     Vehiculo nuevoVehiculo = new Vehiculo(placa, tipoVehiculo, tipoArea);
     nuevoVehiculo.guardarEnCSV();
+    GestorDB.insertarVehiculo(nuevoVehiculo, txtNombre.getText().trim());
 
     // Registrar ingreso (ya guarda en histórico dentro del método)
     Ticket ticket = RegistroEntrada.registrarVehiculo(nuevoVehiculo, modoSeleccionado);
@@ -253,6 +261,10 @@ public class panelingresarVehiculo extends javax.swing.JPanel {
     buttonGroup3.clearSelection();
 
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

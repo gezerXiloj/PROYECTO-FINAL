@@ -4,19 +4,41 @@
  */
 package main.java.com.casitaprojects.parkpluss;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import main.java.com.casitaprojects.parkpluss.GestorDB;
+import main.java.com.casitaprojects.parkpluss.ReporteCierre;
+
 /**
  *
  * @author gezer
  */
 public class panelBuscarVehiculo extends javax.swing.JPanel {
-
+    private DefaultTableModel dtm;
+    private Object[] ob= new Object[4];
+    private int filaSeleccionada;
     /**
      * Creates new form panelBuscarVehiculo
      */
     public panelBuscarVehiculo() {
         initComponents();
+        dtm = (DefaultTableModel) tblDatos.getModel();
         setPreferredSize(new java.awt.Dimension(895, 495));
     }
+    
+    private String normalize(String s) {
+    if (s == null) return "";
+    s = s.replace("\uFEFF", ""); // BOM
+    s = s.replace("\"", "");     // comillas
+    return s.trim().toUpperCase();
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -225,7 +247,41 @@ public class panelBuscarVehiculo extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+    String placa = txtPlaca.getText().trim();
+    String propietario = txtPropietario.getText().trim();
+    String fecha = txtFecha.getText().trim();
+
+    String tipoVehiculo = null;
+    if (chboxAuto.isSelected()) tipoVehiculo = "AUTO";
+    if (chboxMoto.isSelected()) tipoVehiculo = "MOTO";
+
+    String estado = null;
+    if (rbtnInterioParqueo.isSelected()) estado = "ACTIVO";
+    if (rbtnFueradeParqueadero.isSelected()) estado = "INACTIVO";
+
+    java.util.List<Ticket> lista =
+            GestorDB.buscarTickets(placa, propietario, fecha, tipoVehiculo, estado);
+
+    // limpiar tabla
+    DefaultTableModel model = (DefaultTableModel) tblDatos.getModel();
+    model.setRowCount(0);
+
+    // llenar tabla
+    for (Ticket t : lista) {
+        model.addRow(new Object[]{
+                t.getIdTicket(),
+                t.getPlaca(),
+                t.getTipoVehiculo(),
+                t.getIdArea(),
+                t.getIdSpot(),
+                t.getFechaIngreso(),
+                t.getFechaSalida(),
+                t.getModoTarifa(),
+                t.getMonto()
+        });
+    }
+
+JOptionPane.showMessageDialog(this, "Resultados: " + lista.size());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void chboxAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chboxAutoActionPerformed
@@ -257,11 +313,107 @@ public class panelBuscarVehiculo extends javax.swing.JPanel {
     }//GEN-LAST:event_rbtnFueradeParqueaderoActionPerformed
 
     private void btnCierreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCierreActionPerformed
-        // TODO add your handling code here:
+    LocalDate hoy = LocalDate.now();
+
+    try {
+        // 1. Obtener datos
+        ReporteCierre r = GestorDB.generarDatosCierre(hoy);
+        if (r == null) {
+            JOptionPane.showMessageDialog(this, "No se pudo generar el cierre.");
+            return;
+        }
+
+        // 2. Ruta del PDF
+        String ruta = "C:\\Users\\gezer\\Desktop\\archivosCSV\\Cierre_" + hoy + ".pdf";
+
+        // 3. Crear PDF
+        GestorDB.generarPDFCierre(r, ruta);
+
+        // 4. Abrir PDF automáticamente
+        Desktop.getDesktop().open(new File(ruta));
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, 
+            "⚠️ Error al generar o abrir el cierre: " + ex.getMessage());
+    }
+
     }//GEN-LAST:event_btnCierreActionPerformed
 
     private void btnCagarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCagarCSVActionPerformed
-        // TODO add your handling code here:
+    // Rutas (ajusta si tus archivos se llaman diferente)
+    String rutaArea = "C:\\Users\\gezer\\Desktop\\archivosCSV\\area.csv";
+    String rutaSpot = "C:\\Users\\gezer\\Desktop\\archivosCSV\\spot.csv";
+    String rutaVehiculo = "C:\\Users\\gezer\\Desktop\\archivosCSV\\vehiculos.csv";
+    String rutaHistorico = "C:\\Users\\gezer\\Desktop\\archivosCSV\\historico.csv";
+
+    // Cargar CSVs
+    List<String[]> areas = CSVLoader.cargarCSV(rutaArea);
+    List<String[]> spots = CSVLoader.cargarCSV(rutaSpot);
+    List<String[]> vehiculos = CSVLoader.cargarCSV(rutaVehiculo);
+    List<String[]> historico = CSVLoader.cargarCSV(rutaHistorico);
+
+// Mapas rápidos
+Map<String, String> mapPlacaTipo = new HashMap<>(); // clave normalizada -> TIPO (AUTO/MOTO)
+for (String[] v : vehiculos) {
+    if (v.length >= 2) {
+        String placaRaw = v[0];
+        String tipoRaw  = v[1];
+        String placaNorm = normalize(placaRaw);
+        String tipoNorm  = (tipoRaw == null || tipoRaw.isEmpty()) ? "DESCONOCIDO" : tipoRaw.trim().toUpperCase();
+        mapPlacaTipo.put(placaNorm, tipoNorm);
+    }
+}
+
+// debug opcional: imprime cuántas placas cargó
+System.out.println("DEBUG: vehiculos cargados en mapa = " + mapPlacaTipo.size());
+
+    Map<String, String> mapSpotArea = new HashMap<>(); // spot_id -> area_id
+    for (String[] s : spots) {
+        if (s.length >= 2) mapSpotArea.put(s[0], s[1]);
+    }
+
+    // Limpiar tabla
+    DefaultTableModel model = (DefaultTableModel) tblDatos.getModel();
+    model.setRowCount(0);
+
+    // Recorremos historico.csv (orden esperado):
+    // ticket_id,placa,area_id,spot_id,fecha_ingreso,fecha_salida,modo,monto
+    for (String[] h : historico) {
+        // defensivo: comprobar tamaño del array
+        String idTicket = h.length > 0 ? h[0] : "";
+        String placa    = h.length > 1 ? h[1] : "";
+        String areaFromHistorico = h.length > 2 ? h[2] : "";
+        String idSpot   = h.length > 3 ? h[3] : "";
+        String fechaIngreso = h.length > 4 ? h[4] : "";
+        String fechaSalida  = h.length > 5 ? h[5] : "";
+        String modo     = h.length > 6 ? h[6] : "";
+        String monto    = h.length > 7 ? h[7] : "";
+
+        // TIPO viene del vehiculo.csv (si existe)
+        String tipo = mapPlacaTipo.getOrDefault(normalize(placa), "DESCONOCIDO");
+
+        // idArea: preferimos el area que venga en historico.csv (area_id).
+        // Si está vacío, intentamos deducirlo a partir del spot (mapSpotArea).
+        String idArea = (areaFromHistorico != null && !areaFromHistorico.isEmpty())
+                        ? areaFromHistorico
+                        : mapSpotArea.getOrDefault(idSpot, "N/A");
+
+        // Añadir fila (orden según columnas de tu tabla)
+        model.addRow(new Object[] {
+            idTicket,
+            placa,
+            tipo,
+            idArea,
+            idSpot,
+            fechaIngreso,
+            fechaSalida,
+            modo,
+            monto
+        });
+    }
+
+    JOptionPane.showMessageDialog(this, "✔ CSV cargados correctamente. Registros en histórico: " + historico.size());
+
     }//GEN-LAST:event_btnCagarCSVActionPerformed
 
 

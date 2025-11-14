@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class ConexionDB {
 
     // Configuración de la conexión
-    private static final String URL = "jdbc:mysql://localhost:3306/parkplus_db?useSSL=false&serverTimezone=America/Guatemala";
-    private static final String USER = "root";
-    private static final String PASSWORD = "123456";
+    public static final String URL = "jdbc:mysql://localhost:3306/parkplus_db?useSSL=false&serverTimezone=America/Guatemala";
+    public static final String USER = "root";
+    public static final String PASSWORD = "123456";
 
     /**
      * Devuelve SIEMPRE una nueva conexión activa.
@@ -39,4 +39,11 @@ public class ConexionDB {
             }
         }
     }
+    
+    public static Connection getNewConnection() throws SQLException, ClassNotFoundException {
+    // Aseguramos driver (ya lo cargás en getConnection; repetimos por seguridad)
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    return DriverManager.getConnection(URL, USER, PASSWORD);
+}
+    
 }

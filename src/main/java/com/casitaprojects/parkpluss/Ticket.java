@@ -54,6 +54,14 @@ public class Ticket {
     public double getMonto() { return monto; }
     public boolean isActivo() { return activo; }
     
+    public String getPlaca() {
+    return vehiculo.getPlaca();
+}
+
+    public TipoVehiculo getTipoVehiculo() {
+        return vehiculo.getTipoVehiculo();
+    }
+    
     public void setFechaIngreso(LocalDateTime fechaIngreso) {
     this.fechaIngreso = fechaIngreso;
 }

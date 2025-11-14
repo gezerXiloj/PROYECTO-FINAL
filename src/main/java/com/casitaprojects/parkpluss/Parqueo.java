@@ -30,6 +30,12 @@ public class Parqueo extends javax.swing.JFrame {
     
     public Parqueo() {
         initComponents();
+        // *** LLAMADA AL NUEVO MÉTODO PARA CARGAR EL ICONO ESCALADO ***
+        cargarIcono();
+        // ***************************************************************
+        
+        getContentPane().setLayout(new BorderLayout());
+        add(jpPrincipal, BorderLayout.WEST);
         getContentPane().setLayout(new BorderLayout());
         add(jpPrincipal, BorderLayout.WEST);
         
@@ -66,7 +72,44 @@ public class Parqueo extends javax.swing.JFrame {
         
     }
     
+    private void cargarIcono() {
+    // Dimensiones del JLabel 'lblIcono'
+    final int ICON_WIDTH = 120;
+    final int ICON_HEIGHT = 96;
     
+    // *** RUTA CORREGIDA: Sin el slash inicial ni la carpeta 'img' ***
+    // Java buscará este archivo en el mismo paquete de la clase Parqueo.
+    final String ICON_PATH = "istockphoto-1622168072-612x612.jpg"; // ¡Cambio clave aquí! 
+
+    try {
+        // Usamos la clase Parqueo para asegurar la búsqueda dentro de su paquete
+        java.net.URL imgURL = Parqueo.class.getResource(ICON_PATH);
+        
+        if (imgURL == null) {
+            System.err.println("Error: No se pudo encontrar el icono en la ruta: " + ICON_PATH);
+            lblIcono.setText("Icono NO encontrado");
+            return;
+        }
+
+        ImageIcon originalIcon = new ImageIcon(imgURL);
+        Image imagenOriginal = originalIcon.getImage();
+        
+        // Escala la imagen a 120x96
+        Image imagenEscalada = imagenOriginal.getScaledInstance(
+            ICON_WIDTH, 
+            ICON_HEIGHT, 
+            Image.SCALE_SMOOTH
+        );
+
+        // Asigna y limpia el texto
+        lblIcono.setIcon(new ImageIcon(imagenEscalada));
+        lblIcono.setText(""); 
+        
+    } catch (Exception ex) {
+        System.err.println("Error al procesar el icono: " + ex.getMessage());
+        lblIcono.setText("Error Icono");
+    }
+}
     
 
     /**
@@ -80,7 +123,7 @@ public class Parqueo extends javax.swing.JFrame {
 
         jpPrincipal = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblIcono = new javax.swing.JLabel();
         btnIngresarVehiculo = new java.awt.Button();
         btnRetirarVehiculo = new java.awt.Button();
         btnBuscarVehiculo = new java.awt.Button();
@@ -97,7 +140,7 @@ public class Parqueo extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ParkPluss");
 
-        jLabel2.setText("jLabel2");
+        lblIcono.setText("jLabel2");
 
         btnIngresarVehiculo.setFont(new java.awt.Font("Bookman Old Style", 1, 11)); // NOI18N
         btnIngresarVehiculo.setLabel("Ingresar Vehiculo");
@@ -138,7 +181,7 @@ public class Parqueo extends javax.swing.JFrame {
             }
         });
 
-        button1.setLabel("button1");
+        button1.setLabel("IMPORTAR DATOS A BD");
         button1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button1ActionPerformed(evt);
@@ -157,22 +200,20 @@ public class Parqueo extends javax.swing.JFrame {
                             .addComponent(btnReingreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnIngresarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBuscarVehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(28, 28, 28)
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpPrincipalLayout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnRetirarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jpPrincipalLayout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRetirarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addGap(58, 58, 58)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                        .addGap(97, 97, 97)
+                        .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,8 +221,8 @@ public class Parqueo extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnIngresarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRetirarVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -189,14 +230,11 @@ public class Parqueo extends javax.swing.JFrame {
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnBuscarVehiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnReingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(254, 254, 254))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnReingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(220, 220, 220))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -336,7 +374,7 @@ if (ultimo.getFechaSalida() == null) {
     private java.awt.Button btnSalir;
     private java.awt.Button button1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jpPrincipal;
+    private javax.swing.JLabel lblIcono;
     // End of variables declaration//GEN-END:variables
 }
